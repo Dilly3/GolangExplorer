@@ -1,0 +1,49 @@
+  1) What is the difference between TCP and UDP
+        TCP is connection oriented and gives feedback to the caller/connection
+        UDP is datagram oriented and doesnt give feedback to the caller/connection.
+
+  2) Define HTTP and which protocol does HTTP use
+
+        Hypertext transfer protocol used to connect to webservers,
+        transfer data over the web.
+        Http uses the TCP protocol
+
+  3) What is a Socket
+
+        A socket is an internal endpoint for exchanging data.
+
+  4) Differentiate between Client and server
+
+        A server processes request and sends feedback to the calling client.
+        A client makes a request to the server and accepts the processed
+        request to perform its operation.
+
+  5) How Many ports are there in a computer
+
+        65,535
+
+  6) Differentiate between paralelism and concurency
+
+        concurrency is about managing the execution of two or more processes
+        running simultanouesly, independent of eachother.
+
+        parallelism is two or more processes executing at the same
+
+  7) Differentiate between buffered and unbuffered channel
+
+        unbuffered channels are channels without initial capacity.
+        buffered channel are channels with initial capacity.
+
+  8) Define Race condition & Deadlock
+
+        A race conditions occurs when multiple threads try to access or modify the same data.
+        A deadlock is when a goroutine is blocked; waiting on eachother,
+        without any hope of getting unblocked.
+
+  9) What is a wait group Used for
+
+        A waitgroup is used to wait for all active goroutines to finish.
+
+  10) What happens when you close a closed channel
+
+        runtime Panic
