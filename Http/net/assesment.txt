@@ -27,7 +27,7 @@
         concurrency is about managing the execution of two or more processes
         running simultanouesly, independent of eachother.
 
-        parallelism is two or more processes executing at the same
+        parallelism is two or more processes executing at the same time
 
   7) Differentiate between buffered and unbuffered channel
 
