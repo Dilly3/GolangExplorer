@@ -19,23 +19,23 @@ func Constructor() MinStack {
 	return MinStack{}
 }
 
-func (this *MinStack) Push(val int) {
-	this.Element = append(this.Element, val)
+func (Stack *MinStack) Push(val int) {
+	Stack.Element = append(Stack.Element, val)
 }
 
-func (this *MinStack) Pop() {
-	this.Element = this.Element[:len(this.Element)-1]
+func (Stack *MinStack) Pop() {
+	Stack.Element = Stack.Element[:len(Stack.Element)-1]
 }
 
-func (this *MinStack) Top() int {
-	return this.Element[len(this.Element)-1]
+func (Stack *MinStack) Top() int {
+	return Stack.Element[len(Stack.Element)-1]
 }
 
-func (this *MinStack) GetMin() int {
-	min := int(this.Element[0])
-	for i := 1; i < len(this.Element); i++ {
-		if this.Element[i] < min {
-			min = this.Element[i]
+func (Stack *MinStack) GetMin() int {
+	min := int(Stack.Element[0])
+	for i := 1; i < len(Stack.Element); i++ {
+		if Stack.Element[i] < min {
+			min = Stack.Element[i]
 		}
 	} //-3, -2 , -1 , 0 , 1
 	return min

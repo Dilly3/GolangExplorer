@@ -1,11 +1,23 @@
 package main
 
-import (
-	"goexplorer/Algo/Week5"
-)
+import "fmt"
+import G "goexplorer/Algo/Week5"
 
 func main() {
-	opp := []string{"1 97", "2", "1 20", "2", "1 26", "1 20", "2", "3", "1 91", "3"}
-	week5.GetMax(opp)
 
+	fmt.Println(G.CaesarCyp("One should not worry over things that have already happened and that cannot be changed.", 49))
+
+}
+
+func fibonacci(c, quit chan int) {
+	x, y := 1, 1
+	for {
+		select {
+		case c <- x:
+			x, y = y, x+y
+		case <-quit:
+			fmt.Println("quit")
+			return
+		}
+	}
 }

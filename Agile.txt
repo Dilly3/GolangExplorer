@@ -1,0 +1,99 @@
+Extreme programming
+5 aspects of extreme programming
+
+Communication
+Courage
+Respect
+Simplicity
+Feedback
+
+Processeses are Models use to organise production into phases
+
+Practises - Techniques or actions you can use to manage or track development
+
+Methodology - Defined group of Pratices
+
+Practices and methodologies that are based on agile manifesto are Agile Practices & Methodologies
+
+12 Practices of XP
+
+1) Collective code ownership
+2) Continoues Integration
+3) Coding Standard
+4) Continous Testing
+5) Customer on-site
+6) Simple Design
+7) Small Releases
+8) 40 hour Week
+9) Pair Programming
+10) Methaphor
+11) Refactoring
+12) Planning
+
+3 pillars of scrum
+
+Transparency
+Inspection
+Adaptation
+
+Techniques for Inspection and Adaptation
+Sprint Planning
+Daily Scrum
+Sprint Review
+Sprint Retrospective
+
+SCRUM MASTER DUTY TO PRODUCT OWNER
+
+finding techniques to manage backlog
+helping the scrum team to a clear and concise backlog
+Ensure product owner knows how to prioritize backlog
+facilitating Scrum Events
+
+SCRUM MASTER TO DEV TEAM
+
+coach team to self organise
+remove development roadblocks
+facilitate scrum Events
+
+SCRUM DEV TEAM
+
+self organising
+cross functional
+members have no title
+there are no sub teams
+
+SPRINT is a development phase with a specific amount of time
+in which a working prototype is delivered to the client.
+
+LEAN PRACTICES
+    Eliminate waste
+    Amplified Learning
+    Deciding as late as possible
+    Delivering as fast as possible
+    Empowering The team
+    Building Quality in
+    Seeing the Whole
+
+ HOW SOFTWARE DEVELOPMENT CAN BE WASTEFUL
+    process delay
+    unnecessary meetings
+    unclear requirement
+    product defects
+
+    KANBAN
+        TO-DO
+        on-going
+        done
+
+    BOTTLENECK
+        one phase cannot keepup with the work creted by preceeding phase
+
+        SOLUTION TO BOTTLENECK
+         rampup production at bottleneck
+         reduce production before bottleneck
+
+
+
+
+
+
