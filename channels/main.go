@@ -8,10 +8,20 @@ import (
 var Wg sync.WaitGroup
 
 func main() {
-	count := make(chan int)
-	name := make(chan string, 4)
 
-	Wg.Add(4)
+	done := make(chan string, 10)
+	count := make(chan int)
+	name := make(chan string, 5)
+
+	Wg.Add(5)
+	go func() {
+		for _, word := range []string{"foo", "bar", "baz", "fred"} {
+			done <- word
+
+		}
+		close(done)
+		Wg.Done()
+	}()
 	go counter("A", count)
 	go counter("B", count)
 	go counter("C", count)
@@ -19,6 +29,11 @@ func main() {
 	count <- 1
 
 	Wg.Wait()
+
+	for val := range done {
+
+		fmt.Println(val)
+	}
 
 	for {
 		val, ok := <-name
