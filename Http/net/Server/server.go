@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"sync"
 )
 
 var CallerGroup = make(map[net.Conn]bool)
@@ -19,7 +20,8 @@ func main() {
 	listener, lErr := net.Listen("tcp", ":9090")
 	HandleErr(lErr)
 	defer listener.Close()
-
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
 	go func() {
 		for {
 			caller, err := listener.Accept()
@@ -29,11 +31,14 @@ func main() {
 		}
 
 	}()
+	for {
 
-	reader := bufio.NewReader(<-connectionChannel)
-	message, Merr := reader.ReadSlice('\n')
-	HandleErr(Merr)
+		reader := bufio.NewReader(<-connectionChannel)
+		message, Merr := reader.ReadSlice('\n')
+		HandleErr(Merr)
 
-	fmt.Println(string(message))
+		fmt.Println(string(message))
 
+		wg.Wait()
+	}
 }

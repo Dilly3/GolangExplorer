@@ -1,0 +1,8 @@
+
+{
+    "Server" : "hello", 
+    "MongoDBHost" : "world", 
+    "DBUser" : "how do you do",
+     "DBPwd" : "Tellnoone", 
+     "Database" : "welcome"  
+}

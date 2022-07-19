@@ -4,12 +4,22 @@ import (
 	"compress/gzip"
 	"io"
 	"os"
+	"sync"
 )
 
-func main() {
-	Compress("names.txt")
-}
+var Wg = &sync.WaitGroup{}
 
+func main() {
+
+	for _, filename := range os.Args[1:] {
+		Wg.Add(1)
+		go func(filename string) {
+			Compress(filename)
+			Wg.Done()
+		}(filename)
+	}
+	Wg.Wait()
+}
 func Compress(filename string) error {
 	input, err := os.Open(filename)
 	if err != nil {
@@ -22,13 +32,13 @@ func Compress(filename string) error {
 	}
 	defer output.Close()
 	gzoutput := gzip.NewWriter(output)
+	defer gzoutput.Close()
 
 	_, err = io.Copy(gzoutput, input)
 
 	if err != nil {
 		return err
 	}
-	gzoutput.Close()
 
 	return nil
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/fatih/color"
 )
 
-const NumberOfPizzas = 10
+const NumberOfOrders = 15
 
 var pizzasMade, pizzasFailed, total int
 
@@ -16,14 +16,15 @@ var pizzasMade, pizzasFailed, total int
 // information for a given pizza order including whether it was made
 // successfully, and another to handle end of processing (when we quit the channel)
 type Producer struct {
-	data chan PizzaOrder
-	quit chan chan error
+	data chan PizzaBox
+	quit chan string
 }
 
-// PizzaOrder is a type for structs that describes a given pizza order. It has the order
-// number, a message indicating what happened to the order, and a boolean
-// indicating if the order was successfully completed.
-type PizzaOrder struct {
+// PizzaOrder is a type for structs that describes a given pizza order. It has the
+// *** order number
+// *** a message indicating what happened to the order,
+// *** and a boolean indicating if the order was successfully completed.
+type PizzaBox struct {
 	pizzaNumber int
 	message     string
 	success     bool
@@ -32,18 +33,18 @@ type PizzaOrder struct {
 // Close is simply a method of closing the channel when we are done with it (i.e.
 // something is pushed to the quit channel)
 func (p *Producer) Close() error {
-	ch := make(chan error)
-	p.quit <- ch
-	return <-ch
+
+	p.quit <- "channel closed"
+	return nil
 }
 
 // makePizza attempts to make a pizza. We generate a random number from 1-12,
 // and put in two cases where we can't make the pizza in time. Otherwise,
 // we make the pizza without issue. To make things interesting, each pizza
 // will take a different length of time to produce (some pizzas are harder than others).
-func makePizza(pizzaNumber int) *PizzaOrder {
-	pizzaNumber++
-	if pizzaNumber <= NumberOfPizzas {
+func makePizza(pizzaNumber int) *PizzaBox {
+
+	if pizzaNumber <= NumberOfOrders {
 		delay := rand.Intn(5) + 1
 		fmt.Printf("Received order #%d!\n", pizzaNumber)
 
@@ -70,8 +71,8 @@ func makePizza(pizzaNumber int) *PizzaOrder {
 			success = true
 			msg = fmt.Sprintf("Pizza order #%d is ready!", pizzaNumber)
 		}
-
-		p := PizzaOrder{
+		pizzaNumber++
+		p := PizzaBox{
 			pizzaNumber: pizzaNumber,
 			message:     msg,
 			success:     success,
@@ -81,7 +82,7 @@ func makePizza(pizzaNumber int) *PizzaOrder {
 
 	}
 
-	return &PizzaOrder{
+	return &PizzaBox{
 		pizzaNumber: pizzaNumber,
 	}
 }
@@ -94,12 +95,13 @@ func makePizza(pizzaNumber int) *PizzaOrder {
 // constant NumberOfPizzas).
 func pizzeria(pizzaMaker *Producer) {
 	// keep track of which pizza we are making
-	var i = 0
+	var i = 1
 
 	// this loop will continue to execute, trying to make pizzas,
 	// until the quit channel receives something.
 	for {
 		currentPizza := makePizza(i)
+
 		if currentPizza != nil {
 			i = currentPizza.pizzaNumber
 			select {
@@ -107,10 +109,10 @@ func pizzeria(pizzaMaker *Producer) {
 			case pizzaMaker.data <- *currentPizza:
 
 			// we want to quit, so send pizzMaker.quit to the quitChan (a chan error)
-			case quitChan := <-pizzaMaker.quit:
+			case <-pizzaMaker.quit:
 				// close channels
 				close(pizzaMaker.data)
-				close(quitChan)
+				close(pizzaMaker.quit)
 				return
 			}
 		}
@@ -119,7 +121,7 @@ func pizzeria(pizzaMaker *Producer) {
 
 func main() {
 	// seed the random number generator
-	rand.Seed(time.Now().UnixNano())
+	//rand.Seed(time.Now().UnixNano())
 
 	// print out a message
 	color.Cyan("The Pizzeria is open for business!")
@@ -127,8 +129,8 @@ func main() {
 
 	// create a producer
 	pizzaJob := &Producer{
-		data: make(chan PizzaOrder),
-		quit: make(chan chan error),
+		data: make(chan PizzaBox),
+		quit: make(chan string),
 	}
 
 	// run the producer in the background
@@ -136,39 +138,39 @@ func main() {
 
 	// create and run consumer
 	for i := range pizzaJob.data {
-		if i.pizzaNumber <= NumberOfPizzas {
+		if i.pizzaNumber <= NumberOfOrders {
 			if i.success {
-				color.Green(i.message)
-				color.Green("Order #%d is out for delivery!", i.pizzaNumber)
+				color.HiGreen(i.message)
+				color.HiGreen("Order #%d is out for delivery!", i.pizzaNumber)
 			} else {
-				color.Red(i.message)
-				color.Red("The customer is really mad!")
+				color.HiRed(i.message)
+				color.HiRed("The customer is really mad!")
 			}
 		} else {
-			color.Cyan("Done making pizzas...")
+			color.HiCyan("Done making pizzas...")
 			err := pizzaJob.Close()
 			if err != nil {
-				color.Red("*** Error closing channel!", err)
+				color.HiRed("*** Error closing channel!", err)
 			}
 		}
 	}
 
 	// print out the ending message
-	color.Cyan("-----------------")
-	color.Cyan("Done for the day.")
+	color.HiCyan("-----------------")
+	color.HiCyan("Done for the day.")
 
-	color.Cyan("We made %d pizzas, but failed to make %d, with %d attempts in total.", pizzasMade, pizzasFailed, total)
+	color.HiCyan("We made %d pizzas, but failed to make %d, with %d attempts in total.", pizzasMade, pizzasFailed, total)
 
 	switch {
 	case pizzasFailed > 9:
-		color.Red("It was an awful day...")
+		color.HiRed("It was an awful day...")
 	case pizzasFailed >= 6:
-		color.Red("It was not a very good day...")
+		color.HiRed("It was not a very good day...")
 	case pizzasFailed >= 4:
-		color.Yellow("It was an okay day....")
+		color.HiYellow("It was an okay day....")
 	case pizzasFailed >= 2:
-		color.Yellow("It was a pretty good day!")
+		color.HiYellow("It was a pretty good day!")
 	default:
-		color.Green("It was a great day!")
+		color.HiGreen("It was a great day!")
 	}
 }
